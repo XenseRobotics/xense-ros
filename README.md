@@ -1,4 +1,4 @@
-# xense_ros 工作区
+# xense_ros
 
 本工作区包含两个包：
 
