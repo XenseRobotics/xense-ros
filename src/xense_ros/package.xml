@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>xense_ros</name>
+  <version>0.1.0</version>
+  <description>ROS1 package to publish sensor data from xensesdk</description>
+
+  <maintainer email="you@example.com">your name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>cv_bridge</build_depend>
+
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+
+  <!-- xensesdk must be installed separately in the Python environment used by ROS -->
+  <export>
+  </export>
+</package>

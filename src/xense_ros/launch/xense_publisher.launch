@@ -1,0 +1,13 @@
+<launch>
+  <arg name="serial_number" default="" />
+  <arg name="rectify_width" default="200" />
+  <arg name="rectify_height" default="350" />
+  <arg name="publish_rate" default="30.0" />
+  <node pkg="xense_ros" type="xense_publisher.py" name="xense_publisher" output="screen">
+    <!-- serial_number and rectify size must be provided; if serial_number empty node will error -->
+    <param name="serial_number" value="$(arg serial_number)" />
+    <param name="rectify_width" value="$(arg rectify_width)" />
+    <param name="rectify_height" value="$(arg rectify_height)" />
+    <param name="publish_rate" value="$(arg publish_rate)" />
+  </node>
+</launch>
