@@ -141,7 +141,7 @@ def run():
             try:
                 if src is not None:
                     arr = np.ascontiguousarray(np.array(src, dtype=np.uint8))
-                    img = bridge.cv2_to_imgmsg(arr, encoding='rgb8')
+                    img = bridge.cv2_to_imgmsg(arr, encoding='bgr8')
                     img.header.stamp = rospy.Time.now()
                     pub_rect_img.publish(img)
 

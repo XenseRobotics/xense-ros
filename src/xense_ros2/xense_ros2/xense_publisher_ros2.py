@@ -67,9 +67,9 @@ class XensePublisher(Node):
 
         # declare params
         self.declare_parameter('serial_number', '')
-    self.declare_parameter('rectify_width', 200)
-    self.declare_parameter('rectify_height', 350)
-    self.declare_parameter('publish_rate', 30.0)
+        self.declare_parameter('rectify_width', 200)
+        self.declare_parameter('rectify_height', 350)
+        self.declare_parameter('publish_rate', 30.0)
 
         serial = self.get_parameter('serial_number').get_parameter_value().string_value
         rect_w = self.get_parameter('rectify_width').get_parameter_value().integer_value
@@ -147,7 +147,7 @@ class XensePublisher(Node):
             try:
                 if src is not None:
                     arr = np.ascontiguousarray(np.array(src, dtype=np.uint8))
-                    img = self.bridge.cv2_to_imgmsg(arr, encoding='rgb8')
+                    img = self.bridge.cv2_to_imgmsg(arr, encoding='bgr8')
                     img.header.stamp = self.get_clock().now().to_msg()
                     self.pub_rect.publish(img)
                 # do not publish diff; publish rectify and depth
