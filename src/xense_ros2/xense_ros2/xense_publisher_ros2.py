@@ -13,6 +13,7 @@ Publishes under namespace /xense/<SN>/ similar to ROS1 version:
     - force_resultant (geometry_msgs/WrenchStamped) -- fx,fy,fz,tx,ty,tz
     - rectify (sensor_msgs/Image) -- rgb8
     - depth (sensor_msgs/Image) -- 32FC1
+    - marker2d (std_msgs/Float32MultiArray) -- shape: (nrow,ncol,2), dtype: float32
     - status (std_msgs/String)
 """
 
@@ -98,6 +99,7 @@ class XensePublisher(Node):
         self.pub_rect = self.create_publisher(Image, ns + 'rectify', 10)
         # do not publish difference as requested
         self.pub_depth = self.create_publisher(Image, ns + 'depth', 10)
+        self.pub_marker2d = self.create_publisher(Float32MultiArray, ns + 'marker2d', 10)
         self.pub_status = self.create_publisher(String, ns + 'status', 10)
 
         self.bridge = CvBridge()
@@ -120,15 +122,19 @@ class XensePublisher(Node):
 
     def timer_callback(self):
         try:
-            force, res_force, src, depth = self.sensor.selectSensorInfo(
+            force, res_force, src, depth, marker2d = self.sensor.selectSensorInfo(
                 Sensor.OutputType.Force,
                 Sensor.OutputType.ForceResultant,
                 Sensor.OutputType.Rectify,
                 Sensor.OutputType.Depth,
+                Sensor.OutputType.Marker2D,
             )
 
             if force is not None:
                 self.pub_force.publish(np_to_multiarray(np.array(force)))
+
+            if marker2d is not None:
+                self.pub_marker2d.publish(np_to_multiarray(np.array(marker2d, dtype=np.float32)))
 
             if res_force is not None:
                 # res_force is guaranteed to be 6D: [fx,fy,fz,tx,ty,tz]

@@ -16,6 +16,7 @@
 - `/xense/<SN>/force_resultant` : `geometry_msgs/WrenchStamped`（6 个分量：fx,fy,fz -> wrench.force；tx,ty,tz -> wrench.torque）
 - `/xense/<SN>/rectify` : `sensor_msgs/Image`（HxWx3 uint8）。
 - `/xense/<SN>/depth` : `sensor_msgs/Image`（HxW float32）。
+- `/xense/<SN>/marker2d` : `std_msgs/Float32MultiArray`（形状为 nrow x ncol x 2 的 float32 数组）。
 - `/xense/<SN>/status` : `std_msgs/String`（"ok" 或错误信息）
 
 ## 1. 使用指南

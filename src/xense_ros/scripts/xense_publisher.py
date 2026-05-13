@@ -13,6 +13,7 @@ Publishes under namespace `/xense/<SN>/`:
     - force_resultant (geometry_msgs/WrenchStamped) -- fx,fy,fz,tx,ty,tz
     - rectify (sensor_msgs/Image)      -- via cv_bridge (encoding: rgb8) (three-channel uint8)
     - depth (sensor_msgs/Image)        -- via cv_bridge (encoding: 32FC1) (single-channel float32)
+    - marker2d (std_msgs/Float32MultiArray) -- shape: (nrow,ncol,2), dtype: float32
     - status (std_msgs/String)
 
 Note: cv_bridge and xensesdk must be available in the ROS Python environment.
@@ -91,6 +92,7 @@ def run():
     pub_res = rospy.Publisher(ns + 'force_resultant', WrenchStamped, queue_size=1)
     pub_rect_img = rospy.Publisher(ns + 'rectify', Image, queue_size=1)
     pub_depth_img = rospy.Publisher(ns + 'depth', Image, queue_size=1)
+    pub_marker2d = rospy.Publisher(ns + 'marker2d', Float32MultiArray, queue_size=1)
     pub_status = rospy.Publisher(ns + 'status', String, queue_size=1)
 
     bridge = CvBridge()
@@ -109,16 +111,20 @@ def run():
     rate = rospy.Rate(rate_hz)
     while not rospy.is_shutdown():
         try:
-            force, res_force, src, depth = sensor.selectSensorInfo(
+            force, res_force, src, depth, marker2d = sensor.selectSensorInfo(
                 Sensor.OutputType.Force,
                 Sensor.OutputType.ForceResultant,
                 Sensor.OutputType.Rectify,
                 Sensor.OutputType.Depth,
+                Sensor.OutputType.Marker2D,
             )
 
             # force array
             if force is not None:
                 pub_force.publish(np_to_multiarray(np.array(force)))
+
+            if marker2d is not None:
+                pub_marker2d.publish(np_to_multiarray(np.array(marker2d, dtype=np.float32)))
 
             # resultant: expect 6 values [fx,fy,fz,tx,ty,tz]
             if res_force is not None:
